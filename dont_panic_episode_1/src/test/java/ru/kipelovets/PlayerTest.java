@@ -14,11 +14,12 @@ public class PlayerTest {
     public void shouldAnswerWithTrue(String input, String expectedOutput) {
         var streamMock = new StreamMock(input);
         try {
-            var thread = new PlayerThread();
-            thread.start();
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            System.err.println(e.getMessage());
+            // var thread = new PlayerThread();
+            // thread.start();
+            // Thread.sleep(100);
+            Player.main(null);
+        // } catch (InterruptedException e) {
+            // System.err.println(e.getMessage());
         } finally {
             streamMock.finish();
         }
@@ -30,11 +31,12 @@ public class PlayerTest {
 
     private static Stream<Arguments> dataProvider() {
         return Stream.of(
-            Arguments.of("""
-            1
-            2""", """
-            3
-            4""")
-        );
+                Arguments.of("""
+                        1 13 100 0 2 10 0 0
+                        0 0 RIGHT
+                        -1 -1 NONE
+                        -1 -1 NONE
+                        0 9 LEFT""", """
+                        BLOCK"""));
     }
 }
