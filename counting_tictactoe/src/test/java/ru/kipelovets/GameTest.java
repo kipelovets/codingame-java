@@ -17,15 +17,15 @@ public class GameTest {
         { null, null, null },
     });
 
-    Game game = new Game();
-    Point move = game.bestMove(b, X, new Point[] {});
+    Game game = new Game(b);
+    Point move = game.bestMove(new Point[] {});
     assertNull(move);
-    move = game.bestMove(b, X, new Point[]{new Point(0, 2), new Point(1, 2), new Point(2, 2)});
+    move = game.bestMove(new Point[]{new Point(0, 2), new Point(1, 2), new Point(2, 2)});
     assertEquals(new Point(0, 2), move);
   }
 
   @Test
-  void testMinimax() {
+  void testBigBoard() {
 
   }
 }

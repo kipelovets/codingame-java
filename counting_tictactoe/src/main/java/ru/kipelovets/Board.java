@@ -146,6 +146,10 @@ public class Board {
     return result;
   }
 
+  public boolean isWinner(Mark player) {
+    return calculateScore(player) > calculateScore(player.flip());
+  }
+
   public boolean isCellFree(Point p) {
     return !moves.contains(p);
   }

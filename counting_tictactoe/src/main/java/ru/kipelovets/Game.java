@@ -3,38 +3,35 @@ package ru.kipelovets;
 import java.util.*;
 
 public class Game {
-  private Point[] possibleMoves(Board board) {
-    List<Point> result = new ArrayList<Point>();
-    for (int i = 0; i < board.getSize(); i++) {
-      for (int j = 0; j < board.getSize(); j++) {
-        Point p = new Point(i, j);
-        if (board.isCellFree(p)) {
-          result.add(p);
-        }
-      }
-    }
-    return result.toArray(new Point[0]);
+  private Board board;
+  private int movesChecked;
+
+  public Game(Board board) {
+    this.board = board;
   }
 
-  public int minimax(Board board, Board.Mark player) {
-    return minimax(board, player, false);
-  }
-
-  private int minimax(Board board, Board.Mark player, boolean isMax) {
+  private int minimax(Board.Mark player, boolean isMax) {
     if (board.isFull()) {
       int playerScore = board.calculateScore(player),
-        opponentScore = board.calculateScore(player.flip());
-      System.err.println(board.print());
-      System.err.println("Player score: " + playerScore + ", opp score: " + opponentScore);
+          opponentScore = board.calculateScore(player.flip());
+      // System.err.println(board.print());
+      // System.err.println("Player score: " + playerScore + ", opp score: " +
+      // opponentScore);
+
+      movesChecked++;
+      if (movesChecked % 1000 == 0) {
+        System.err.println("Moves checked: " + movesChecked);
+      }
+
       return playerScore - opponentScore;
     }
 
-    Point[] moves = possibleMoves(board);
+    Point[] moves = (new MoveSelector()).possibleMoves(board);
 
     int bestScore = 0;
     for (Point move : moves) {
       board.move(move);
-      int moveValue = minimax(board, player, !isMax);
+      int moveValue = minimax(player, !isMax);
       board.undoMove();
       if (isMax) {
         bestScore = Math.max(moveValue, bestScore);
@@ -46,14 +43,16 @@ public class Game {
     return bestScore;
   }
 
-  public Point bestMove(Board board, Board.Mark player, Point[] availableMoves) {
+  public Point bestMove(Point[] availableMoves) {
+    movesChecked = 0;
     Point move = null;
+    Board.Mark player = board.playerTurn();
     int bestScore = Integer.MIN_VALUE;
     for (Point m : availableMoves) {
       System.err.println(">>> Checking move: " + m);
       board.move(m);
-      int score = minimax(board, player);
-      board.undoMove();;
+      int score = minimax(player, false);
+      board.undoMove();
       if (score > bestScore) {
         bestScore = score;
         move = m;

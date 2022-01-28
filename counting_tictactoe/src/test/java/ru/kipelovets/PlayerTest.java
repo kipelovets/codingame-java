@@ -13,15 +13,8 @@ public class PlayerTest {
     @MethodSource("dataProvider")
     public void shouldAnswerWithTrue(String input, String expectedOutput) {
         // var streamMock = new StreamMock(input);
-        // try {
-        //     var thread = new PlayerThread();
-        //     thread.start();
-        //     Thread.sleep(100);
-        // } catch (InterruptedException e) {
-        //     System.err.println(e.getMessage());
-        // } finally {
-        //     streamMock.finish();
-        // }
+        // Player.main(null);
+        // streamMock.finish();
 
         // var out = streamMock.getOutput();
 
@@ -30,11 +23,10 @@ public class PlayerTest {
 
     private static Stream<Arguments> dataProvider() {
         return Stream.of(
-            Arguments.of("""
-            1
-            2""", """
-            3
-            4""")
-        );
+                Arguments.of("""
+                        -1 -1
+                        1
+                        0 0""", """
+                        0 0"""));
     }
 }
